@@ -552,7 +552,6 @@ const AT = (() => {
         ${beat('2022 – 2024', 'The plot twist', 'An MBA at IIM Bangalore. National winner at Datamatrix (290+ teams) and Terra Nullius (70+ teams), runner-up at Paramarsh (650+ teams), and stand-up champion on the side.')}
         ${beat('2023', 'The consultant', 'Summer associate at Bain & Company. Found ₹10 Cr in revenue potential for a biopharma client by benchmarking 10+ rivals.')}
         ${beat('2024 – now', 'The PM', 'Product Manager 2 at Microsoft, Azure Native Integrations, CoreAI. Three partner launches with Commvault, Everpure and Dell.')}
-        ${beat('Next season', 'Growth?', '<span class="todo">One line on why growth, and why Wispr Flow</span>', 'next')}
       </div>
       <div class="fine"><div class="section-h"><h2>The fine print</h2><span class="muted">Credentials live here, not in the titles</span></div>
         <ul>
@@ -571,10 +570,7 @@ const AT = (() => {
         <div class="owner"><img class="avatar sm" src="${AVATAR}" alt=""><div class="who"><b>${esc(CHANNEL.name)}</b><span class="muted mono">pinned post</span></div></div>
         <p>Hi Wispr team. Here are the logistics, so you don't have to dig.</p>
         <dl class="facts">
-          <dt>Role</dt><dd><span class="todo">Full-time, intern or either</span></dd>
           <dt>Based in</dt><dd>${esc(CHANNEL.city)}</dd>
-          <dt>Bangalore</dt><dd><span class="todo">Relocate or travel</span></dd>
-          <dt>Can start</dt><dd><span class="todo">Start date</span></dd>
           <dt>Email</dt><dd><span id="email">${esc(CHANNEL.email)}</span><button class="copy" type="button" data-copy="${esc(CHANNEL.email)}">Copy</button></dd>
           <dt>LinkedIn</dt><dd><a href="${CHANNEL.linkedin}" target="_blank" rel="noopener">agrima-yadav</a></dd>
         </dl>
@@ -595,13 +591,13 @@ const AT = (() => {
   // ---------- Watch page ----------
   function watch(v) {
     const pad = i => String(i + 1).padStart(2, '0');
+    const chapters = v.chapters.filter(c => !c.todo);
     const player = v.videoSrc
       ? `<video controls playsinline src="${esc(v.videoSrc)}"></video>`
       : `${thumb(v)}<div class="overlay"><span class="mono">${v.kind === 'short' ? 'Short' : 'Episode · ' + esc(v.length)}</span><button type="button" data-jump="ch-0">Start reading</button></div>`;
     const chapter = (c, i) => `<section class="chapter" id="ch-${i}"><h3><span class="mono muted">${pad(i)}</span>${esc(c.label)}</h3>
         ${c.text ? `<p>${esc(c.text)}</p>` : ''}
-        ${c.bullets ? `<ul>${c.bullets.map(b => `<li>${esc(b)}</li>`).join('')}</ul>` : ''}
-        ${c.todo ? `<div class="todo">${esc(c.todo)}</div>` : ''}</section>`;
+        ${c.bullets ? `<ul>${c.bullets.map(b => `<li>${esc(b)}</li>`).join('')}</ul>` : ''}</section>`;
     const next = VIDEOS.filter(x => x.id !== v.id);
     return `<div class="watch">
       <div>
@@ -611,8 +607,8 @@ const AT = (() => {
         <div class="desc">
           <div class="statline">${esc(v.stat)}</div>
           <p class="hook">${esc(v.hook)}</p>
-          <div class="chips">${v.chapters.map((c, i) => `<button type="button" class="chip" data-jump="ch-${i}"><span class="mono">${pad(i)}</span>${esc(c.label)}</button>`).join('')}</div>
-          ${v.chapters.map(chapter).join('')}
+          <div class="chips">${chapters.map((c, i) => `<button type="button" class="chip" data-jump="ch-${i}"><span class="mono">${pad(i)}</span>${esc(c.label)}</button>`).join('')}</div>
+          ${chapters.map(chapter).join('')}
           <div class="receipt">Receipt: ${esc(v.receipt)}</div>
         </div>
         <div class="comments"><h2>Comments</h2>
